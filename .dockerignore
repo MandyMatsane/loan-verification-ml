@@ -2,4 +2,3 @@ venv/
 .git/
 __pycache__/
 *.pyc
-*.pkl
