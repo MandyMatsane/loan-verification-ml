@@ -72,3 +72,23 @@ def predict(data: LoanRequest):
         "fraud_risk_score": credit_risk,
         "reasoning_notes": reasoning_notes
     }
+
+FEATURE_NAMES = [
+    "no_of_dependents", "education", "self_employed", "income_annum",
+    "loan_amount", "loan_term", "cibil_score", "residential_assets_value",
+    "commercial_assets_value", "luxury_assets_value", "bank_asset_value"
+]
+
+@app.get("/api/ml/feature-importance")
+def feature_importance():
+    importances = model.feature_importances_
+    ranked = sorted(
+        zip(FEATURE_NAMES, importances),
+        key=lambda x: x[1], reverse=True
+    )
+    return {
+        "features": [
+            {"feature": name, "importance": round(float(score) * 100, 2)}
+            for name, score in ranked
+        ]
+    }
